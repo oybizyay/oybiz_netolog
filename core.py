@@ -2,7 +2,7 @@ from datetime import datetime
 
 import vk_api
 
-from config import acces_token
+from conf import acces_token
 
 
 class VkTools():
@@ -16,12 +16,14 @@ class VkTools():
                                  'fields': 'city,bdate,sex,relation,home_town'
                                  }
                                 )
+
         user_info = {'name': info['first_name'] + ' ' + info['last_name'],
                      'id': info['id'],
                      'bdate': info['bdate'] if 'bdate' in info else None,
                      'home_town': info['home_town'],
                      'sex': info['sex'],
-                     'city': info['city']['id']
+                     'city': info['city']['id'],
+                     'relation': info['relation']
                      }
         return user_info
 
@@ -36,7 +38,7 @@ class VkTools():
         age_to = age + 5
 
         users = self.api.method('users.search',
-                                {'count': 10,
+                                {'count': 1000,
                                  'offset': 0,
                                  'age_from': age_from,
                                  'age_to': age_to,
@@ -66,6 +68,7 @@ class VkTools():
         photos = self.api.method('photos.get',
                                  {'user_id': user_id,
                                   'album_id': 'profile',
+                                  'count': 3,
                                   'extended': 1
                                   }
                                  )
